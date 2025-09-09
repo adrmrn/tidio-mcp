@@ -1,0 +1,94 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation and non-essential files
+README.md
+CLAUDE.md
+*.md
+!pyproject.toml
+
+# Development tools
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# UV lock file (regenerated during build)
+uv.lock
+
+# Test files
+test_*.py
+*_test.py
+tests/
+
+# Temporary files
+*.tmp
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Environment files (pass via docker run)
+.env.example
+
+# Python version management
+.python-version
+
+# Claude Code settings
+.claude/
+
+# Build automation
+Makefile
+
+# MCP client configuration (not server config)
+.mcp.json

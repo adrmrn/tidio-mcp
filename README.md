@@ -14,6 +14,8 @@ It acts as a layer over the [Tidio OpenAPI (REST API)](https://developers.tidio.
 
 ### Option 1: Non-Technical Users (Claude Desktop + Docker)
 
+You can quickly get started using the ready-to-use Docker image `adrmrn/tidio-mcp` from [Docker Hub](https://hub.docker.com/r/adrmrn/tidio-mcp).
+
 1. Install and run [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Install and open [Claude Desktop](https://claude.ai/download)
 3. In Claude Desktop, go to **Settings** → **Developer** → **Edit Config**, and open the `claude_desktop_config.json` file in a text editor
@@ -81,8 +83,6 @@ It acts as a layer over the [Tidio OpenAPI (REST API)](https://developers.tidio.
 - Unassign Ticket
 - Reply to Ticket
 - Add Internal Note to Ticket
-
-The server also includes a basic prompt with instructions for the LLM.
 
 ## Planned Features / Missing Endpoints
 

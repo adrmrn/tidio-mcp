@@ -131,6 +131,41 @@ class TestGetOperators:
         # Assert
         assert result == {"status": "ok", "data": operators_data}
 
+    @pytest.mark.unit
+    @responses.activate
+    def test_get_operators_with_cursor(self):
+        # Arrange
+        cursor = "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw=="
+        operators_data = {
+            "operators": [
+                {
+                    "id": "fe7df646-6881-4d44-bcd5-639501a32bfe",
+                    "active": True,
+                    "email": "john.smith@company.com",
+                    "name": "John Smith",
+                    "role": "owner",
+                    "picture": "https://example.com/avatars/john.jpg",
+                    "last_seen": "2025-09-06T14:29:31+00:00",
+                },
+            ],
+            "meta": {
+                "cursor": "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+                "limit": 100,
+            },
+        }
+        responses.add(
+            responses.GET,
+            f"https://api.tidio.com/operators?cursor={cursor}",
+            json=operators_data,
+            status=200,
+        )
+
+        # Act
+        result = get_operators(cursor=cursor)
+
+        # Assert
+        assert result == {"status": "ok", "data": operators_data}
+
 
 class TestGetContacts:
     @pytest.mark.unit
@@ -212,7 +247,7 @@ class TestGetContacts:
             ),
         ],
     )
-    def test_get_contacts_using_filters(
+    def test_get_contacts_by_filters(
         self, cursor: str | None, email: str | None, expected_endpoint: str
     ):
         # Arrange

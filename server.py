@@ -37,14 +37,27 @@ def get_departments() -> dict:
 
 
 @mcp.tool(title="Get Operators")
-def get_operators() -> dict:
+def get_operators(cursor: str = None) -> dict:
     """
     Get all operators from Tidio. Operators are agents that manage tickets and contact with customers. Operator can be assigned to tickets.
 
+    This endpoint supports pagination. If the response contains meta.cursor with a non-null value,
+    there are more results available. Pass that cursor value to the next request to fetch the next page.
+    When meta.cursor is null, you've reached the end of the list.
+
+    Args:
+        cursor (str, optional): Pagination cursor from previous response. Use the value from meta.cursor
+            to fetch the next page of results.
+
     Returns:
-        Dict: A dictionary containing operator information.
+        Dict: A dictionary containing operator information and pagination metadata.
     """
-    response = tidio_api_client.get("/operators")
+    endpoint = "/operators"
+
+    if cursor is not None:
+        endpoint += f"?{urlencode({'cursor': cursor})}"
+
+    response = tidio_api_client.get(endpoint)
 
     return _tool_call_succeed(data=response)
 

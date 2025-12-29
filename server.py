@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlencode
 
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
@@ -49,14 +50,36 @@ def get_operators() -> dict:
 
 
 @mcp.tool(title="Get Contacts")
-def get_contacts() -> dict:
+def get_contacts(cursor: str = None, email: str = None) -> dict:
     """
     Get all contacts from Tidio. Contacts are customers that have contacted company via chat or email.
 
+    This endpoint supports pagination. If the response contains meta.cursor with a non-null value,
+    there are more results available. Pass that cursor value to the next request to fetch the next page.
+    When meta.cursor is null, you've reached the end of the list.
+
+    Args:
+        cursor (str, optional): Pagination cursor from previous response. Use the value from meta.cursor
+            to fetch the next page of results.
+        email (str, optional): Filter contacts by email address. Must be a full, valid email address
+            (wildcards not supported).
+
     Returns:
-        Dict: A dictionary containing contacts information.
+        Dict: A dictionary containing contacts information and pagination metadata.
     """
-    response = tidio_api_client.get("/contacts")
+    endpoint = "/contacts"
+    query_params = {}
+
+    if cursor is not None:
+        query_params["cursor"] = cursor
+
+    if email is not None:
+        query_params["email"] = email
+
+    if query_params:
+        endpoint += f"?{urlencode(query_params)}"
+
+    response = tidio_api_client.get(endpoint)
 
     return _tool_call_succeed(data=response)
 

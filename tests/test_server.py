@@ -192,6 +192,69 @@ class TestGetContacts:
 
     @pytest.mark.unit
     @responses.activate
+    @pytest.mark.parametrize(
+        "cursor,email,expected_endpoint",
+        [
+            (
+                "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+                None,
+                "/contacts?cursor=aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+            ),
+            (
+                None,
+                "alice@example.com",
+                "/contacts?email=alice@example.com",
+            ),
+            (
+                "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+                "alice@example.com",
+                "/contacts?cursor=aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==&email=alice@example.com",
+            ),
+        ],
+    )
+    def test_get_contacts_using_filters(
+        self, cursor: str | None, email: str | None, expected_endpoint: str
+    ):
+        # Arrange
+        contacts_data = {
+            "contacts": [
+                {
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "distinct_id": "ext_123456",
+                    "first_name": "Alice",
+                    "last_name": "Johnson",
+                    "email": "alice@example.com",
+                    "phone": "+1234567890",
+                    "language": "en",
+                    "country": "US",
+                    "city": "New York",
+                    "messenger_id": None,
+                    "instagram_id": None,
+                    "created_at": "2025-09-06T10:30:00+00:00",
+                    "email_consent": "subscribed",
+                    "properties": [{"name": "company", "value": "Acme Corp"}],
+                },
+            ],
+            "meta": {
+                "cursor": "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+                "limit": 100,
+            },
+        }
+        responses.add(
+            responses.GET,
+            f"https://api.tidio.com{expected_endpoint}",
+            json=contacts_data,
+            status=200,
+        )
+
+        # Act
+        result = get_contacts(cursor=cursor, email=email)
+
+        # Assert
+        assert result == {"status": "ok", "data": contacts_data}
+
+    @pytest.mark.unit
+    @responses.activate
     def test_get_contacts_empty_response(self):
         # Arrange
         contacts_data = {

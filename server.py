@@ -55,7 +55,7 @@ def get_operators(cursor: str = None) -> dict:
     endpoint = "/operators"
 
     if cursor is not None:
-        endpoint += f"?{urlencode({'cursor': cursor})}"
+        endpoint += f"?{urlencode({"cursor": cursor})}"
 
     response = tidio_api_client.get(endpoint)
 
@@ -130,14 +130,27 @@ def delete_contact(contact_id: str) -> dict:
 
 
 @mcp.tool(title="Get Tickets")
-def get_tickets() -> dict:
+def get_tickets(cursor: str = None) -> dict:
     """
     Get all tickets from Tidio. Use this to get tickets overview.
 
+    This endpoint supports pagination. If the response contains meta.cursor with a non-null value,
+    there are more results available. Pass that cursor value to the next request to fetch the next page.
+    When meta.cursor is null, you've reached the end of the list.
+
+    Args:
+        cursor (str, optional): Pagination cursor from previous response. Use the value from meta.cursor
+            to fetch the next page of results.
+
     Returns:
-        Dict: A dictionary containing ticket information.
+        Dict: A dictionary containing ticket information and pagination metadata.
     """
-    response = tidio_api_client.get("/tickets")
+    endpoint = "/tickets"
+
+    if cursor is not None:
+        endpoint += f"?{urlencode({"cursor": cursor})}"
+
+    response = tidio_api_client.get(endpoint)
 
     return _tool_call_succeed(data=response)
 

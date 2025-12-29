@@ -149,7 +149,7 @@ class TestGetOperators:
                 },
             ],
             "meta": {
-                "cursor": "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+                "cursor": "next_cursor_value",
                 "limit": 100,
             },
         }
@@ -271,7 +271,7 @@ class TestGetContacts:
                 },
             ],
             "meta": {
-                "cursor": "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw==",
+                "cursor": "next_cursor_value",
                 "limit": 100,
             },
         }
@@ -436,6 +436,43 @@ class TestGetTickets:
 
         # Act
         result = get_tickets()
+
+        # Assert
+        assert result == {"status": "ok", "data": tickets_data}
+
+    @pytest.mark.unit
+    @responses.activate
+    def test_get_tickets_with_cursor(self):
+        # Arrange
+        cursor = "aWRfX2U2YTgyYTc0LTExNzAtNGY1Ny1hMDMxLWIzNmYzZjZiYzA5Mw=="
+        tickets_data = {
+            "tickets": [
+                {
+                    "id": 10009,
+                    "link": "https://www.tidio.com/panel/inbox/tickets/10009",
+                    "subject": "Unable to process payment",
+                    "contact_id": "27206142-57a3-40c0-8c76-707cdf05cd32",
+                    "contact_email": "customer@example.com",
+                    "priority": "urgent",
+                    "status": "open",
+                    "assigned_operator_id": "fe7df646-6881-4d44-bcd5-639501a32bfe",
+                    "assigned_department_id": "535eb95e-107c-440a-8720-53649368a26a",
+                },
+            ],
+            "meta": {
+                "cursor": "next_cursor_value",
+                "limit": 100,
+            },
+        }
+        responses.add(
+            responses.GET,
+            f"https://api.tidio.com/tickets?cursor={cursor}",
+            json=tickets_data,
+            status=200,
+        )
+
+        # Act
+        result = get_tickets(cursor=cursor)
 
         # Assert
         assert result == {"status": "ok", "data": tickets_data}

@@ -55,7 +55,7 @@ def get_operators(cursor: str = None) -> dict:
     endpoint = "/operators"
 
     if cursor is not None:
-        endpoint += f"?{urlencode({"cursor": cursor})}"
+        endpoint += f"?{urlencode({'cursor': cursor})}"
 
     response = tidio_api_client.get(endpoint)
 
@@ -148,7 +148,7 @@ def get_tickets(cursor: str = None) -> dict:
     endpoint = "/tickets"
 
     if cursor is not None:
-        endpoint += f"?{urlencode({"cursor": cursor})}"
+        endpoint += f"?{urlencode({'cursor': cursor})}"
 
     response = tidio_api_client.get(endpoint)
 

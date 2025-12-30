@@ -84,10 +84,7 @@ You can quickly get started using the ready-to-use Docker image `adrmrn/tidio-mc
 - Reply to Ticket
 - Add Internal Note to Ticket
 
-## Planned Features / Missing Endpoints
-
-- [ ] Pagination
-- [ ] Filtering
+## Missing Endpoints
 
 The following endpoints are not yet implemented but are planned for future updates:
 
@@ -98,8 +95,6 @@ The following endpoints are not yet implemented but are planned for future updat
 - [ ] Get viewed pages history (`GET /contacts/{contact_id}/viewed-pages`)
 - [ ] Get contact properties (`GET /contact-properties`)
 - [ ] Get contact messages (`POST /contacts/{contact_id}/messages`)
-- [ ] Upsert products (`PUT /products/batch`)
-- [ ] Delete product (`DELETE /products/{product_id}`)
 
 ## Contributing
 
